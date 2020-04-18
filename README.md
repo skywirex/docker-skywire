@@ -15,13 +15,15 @@ The architectures supported by this image are:
 | :----------: | -------------- |
 |    x86-64    | amd64-latest   |
 |    arm64     | arm64v8-latest |
-|    armhf     | armhf-latest   |
+|    armhf     | armhf   |
 
 ## Usage
 
 Here are some example snippets to help you get started creating a container.
 
-- Step 1: Create hypervisor container (Replace `<tag>` with appropriate tag above.)
+### HYPERVISOR
+
+- Step 1: Create hypervisor container (replace `<tag>` with appropriate tag above.)
 
 ```
 docker create \
@@ -39,17 +41,25 @@ skywirex/skywire-hypervisor:<tag>
 docker start hypervisor
 ```
 
-From now you can access to hypervisorUI by typing `<Hypervisor-IP>:8000`
+- Step 3: Check the hypervisor container if it run correctly
 
-- Check your public key of hypervisor
+```
+docker ps -a
+```
+
+- Step4: Access to hypervisorUI by typing `<Hypervisor-IP>:8000` in your browser
+
+- Step5: Get your public key of hypervisor
 
 ```
 cat ~/.config/skywire/hypervisor-config.json
 ```
 
-Copy public key of hypervisor to input to the configuration file of visor `skywire-config.json`
+- Copy public key of hypervisor to input to the configuration file of visor `skywire-config.json`
 
-- Creat visor container 
+### VISOR
+
+- Creat visor container (replace `<tag>` with appropriate tag above.)
 
 ```
 docker create \
@@ -100,7 +110,7 @@ docker start visor
 Compress your visor folder using this command
 
 ```
-tar czvf skywire-visor-backup.tgz ~/.config/visor
+tar czvf skywire-visor-backup.tgz ~/.config/skywire
 ```
 
 Use a program like `WinSCP` to access to your board and copy skywire-visor-backup.tgz file to save somewhere.
@@ -118,6 +128,8 @@ Most of our images are static, versioned, and require an image update and contai
 Below are the instructions for updating containers:
 
 ### Via Docker Run/Create
+
+The example below for updating visor container
 
 * Update the image: `docker pull skywirex/visor:<tag>`
 * Stop the running container: `docker stop visor`
