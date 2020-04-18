@@ -21,7 +21,7 @@ The architectures supported by this image are:
 
 Here are some example snippets to help you get started creating a container.
 
-Hypervisor container
+- Step 1: Create hypervisor container (Replace `<tag>` with appropriate tag above.)
 
 ```
 docker create \
@@ -33,15 +33,13 @@ docker create \
 skywirex/skywire-hypervisor:<tag>
 ```
 
-Replace `<tag>` with appropriate tag above.
-
-- Run hypervisor in Docker container
+- Step 2: Run hypervisor in Docker container
 
 ```
 docker start hypervisor
 ```
 
-From now you can access to hypervisorUI by typing <Hypervisor-IP>:8000
+From now you can access to hypervisorUI by typing `<Hypervisor-IP>:8000`
 
 - Check your public key of hypervisor
 
@@ -51,7 +49,7 @@ cat ~/.config/skywire/hypervisor-config.json
 
 Copy public key of hypervisor to input to the configuration file of visor `skywire-config.json`
 
-- Visor container 
+- Creat visor container 
 
 ```
 docker create \
