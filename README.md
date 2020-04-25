@@ -15,7 +15,7 @@ The architectures supported by this image are:
 | :----------: | -------------- |
 |    x86-64    | amd64-latest   |
 |    arm64     | arm64v8-latest |
-|    armhf     | armhf   |
+|    armhf     | armhf          |
 
 ## Usage
 
@@ -47,9 +47,9 @@ docker start hypervisor
 docker ps -a
 ```
 
-- Step4: Access to hypervisorUI by typing `<Hypervisor-IP>:8000` in your browser
+- Step 4: Access to hypervisorUI by typing `<Hypervisor-IP>:8000` in your browser
 
-- Step5: Get your public key of hypervisor
+- Step 5: Get your public key of hypervisor
 
 ```
 cat ~/.config/skywire/hypervisor-config.json
@@ -94,8 +94,7 @@ docker stop visor
   ...................
   
   "hypervisors": [{
-                 "public_key":"your-hypervisor-public-key-here",
-               "address":"localhost:7080"  
+                 "public_key":"your-hypervisor-public-key-here"
   }],
 ```
 
@@ -149,5 +148,7 @@ cd visor
 docker build \
   --no-cache \
   --pull \
-  -t skywirex/visor:latest .
+  -t skywirex/skywire-visor .
 ```
+
+It will create an image with the `<tag>` latest
