@@ -1,6 +1,6 @@
 #!/bin/sh
 conf_path=/root/skywire/config
-exec_path=/root/skywire-mainnet
+exec_path=/root/skywire
 
 userid=0 # 65534 - nobody, 0 - root
 groupid=0

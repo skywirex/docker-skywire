@@ -25,7 +25,7 @@ RUN apk add su-exec openssl
 
 COPY --from=builder /go/bin/hypervisor /usr/local/bin/
 
-RUN mkdir -p /root/skywire-mainnet 
+RUN mkdir -p /root/skywire
 
 ENV CONFIG_DIR=/root/skywire/config
 

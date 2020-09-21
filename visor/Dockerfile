@@ -25,7 +25,7 @@ RUN apk add su-exec openssl iproute2 && \
 # copy binaries files
 
 COPY --from=builder /go/bin/. /usr/local/bin/
-COPY --from=builder /root/skywire-mainnet/apps /root/skywire-mainnet/apps
+COPY --from=builder /root/skywire/apps /root/skywire/apps
 
 ENV CONFIG_DIR=/root/skywire/config
 
