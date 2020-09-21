@@ -7,8 +7,8 @@ RUN apk add git make
 
 #creat directory and clone source
 RUN cd ~ && \
-    git clone https://github.com/SkycoinProject/skywire-mainnet.git && \
-	cd skywire-mainnet && \
+    git clone https://github.com/skycoin/skywire.git && \
+	cd skywire && \
     make build && make install
 
 # visor image
