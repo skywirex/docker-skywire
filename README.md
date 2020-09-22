@@ -118,7 +118,7 @@ Use a program like `WinSCP` to access to your board and copy skywire-visor-backu
 
 Check uptime of your public key at the address below
 
-https://uptime-tracker.skywire.skycoin.com/visors
+https://uptime-tracker.skywire.skycoin.com/uptimes
 
 ## Updating Info
 
@@ -145,13 +145,9 @@ If you want to make local modifications to these images for development purposes
 git clone https://github.com/skywirex/docker-skywire.git
 cd docker-skywire
 cd visor
-docker build \
-  --no-cache \
-  --pull \
-  -t skywirex/skywire-visor .
+VERSION=$(git ls-remote --tags --refs --sort="v:refname" git://github.com/skycoin/skywire.git | tail -n1 | sed 's/.*\///')
+docker build --no-cache --pull -t skywirex/skywire-visor:$VERSION .
 ```
-
-It will create an image with the `<tag>` latest
 
 ## Track visors
 
