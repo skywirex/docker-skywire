@@ -9,13 +9,16 @@ sudo sh get-docker.sh
 
 ## Supported Architectures
 
-The architectures supported by this image are:
+Tag Structure: $VERSION-$ARC 
 
-| Architecture | Tag            |
+The architectures supported by this image are: 
+
+
+| Architecture | Latest Tag   |
 | :----------: | -------------- |
-|    arm64     | arm64v8-latest |
-|    armhf     | armhfv7-latest |
-|    x86-64    | amd64-latest   |
+|    aarch64   | v0.3.0-aarch64 |
+|    armhf     | v0.3.0-armhf |
+|    x86_64    | v0.3.0-x86_64   |
 
 ## Usage
 
