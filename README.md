@@ -9,22 +9,22 @@ sudo sh get-docker.sh
 
 ## Supported Architectures
 
-Tag Structure: $VERSION-$ARC 
-
 The architectures supported by this image are: 
 
 
-| Architecture | Latest Tag   |
+| Architecture |  Tag   |
 | :----------: | -------------- |
 |    aarch64   | v0.3.0-aarch64 |
-|    armhf     | v0.3.0-armhf |
+|    armhf     | not available  |
 |    x86_64    | v0.3.0-x86_64   |
+
+Check your board architecture using `arch` command. If you boards are not support, see **Building locally** to build your own docker images. You need to build `skywire-hypervisor` and `skywire-visor` images
 
 ## Usage
 
 Here are some example snippets to help you get started creating a container.
 
-### HYPERVISOR
+### HYPERVISOR INSTALLATION
 
 - Step 1: Create hypervisor container (replace `<tag>` with appropriate tag above.)
 
@@ -36,6 +36,18 @@ docker create \
   --net=host \
   -v ~/.config/skywire:/root/skywire/config \
 skywirex/skywire-hypervisor:<tag>
+```
+
+***Example***: your board architecture `aarch64` using the below command to create hypervisor docker container:
+
+```
+docker create \
+  --name=hypervisor \
+  -it \
+  --restart=unless-stopped \
+  --net=host \
+  -v ~/.config/skywire:/root/skywire/config \
+skywirex/skywire-hypervisor:v0.3.0-aarch64
 ```
 
 - Step 2: Run hypervisor in Docker container
@@ -50,7 +62,7 @@ docker start hypervisor
 docker ps -a
 ```
 
-- Step 4: Access to hypervisorUI by typing `<Hypervisor-IP>:8000` in your browser
+- Step 4: Access to hypervisorUI by typing `<hypervisor-IP>:8000` in your browser
 
 - Step 5: Get your public key of hypervisor
 
@@ -60,7 +72,7 @@ cat ~/.config/skywire/hypervisor-config.json
 
 - Copy public key of hypervisor to input to the configuration file of visor `skywire-config.json`
 
-### VISOR
+### VISOR INSTALLATION
 
 - Creat visor container (replace `<tag>` with appropriate tag above.)
 
@@ -90,15 +102,7 @@ docker stop visor
 - Edit the contents of `skywire-config.json` file in the folder `~/.config/skywire` look like below
 
 ```
-  "stcp": {
-    "pk_table": null,
-    "local_address": "localhost:7777"
-  },
-  ...................
-  
-  "hypervisors": [{
-                 "public_key":"your-hypervisor-public-key-here"
-  }],
+"hypervisors": ["your-hypervisor-public-key-here"],
 ```
 
 - Start visor again
@@ -149,7 +153,8 @@ git clone https://github.com/skywirex/docker-skywire.git
 cd docker-skywire
 cd visor
 VERSION=$(git ls-remote --tags --refs --sort="v:refname" git://github.com/skycoin/skywire.git | tail -n1 | sed 's/.*\///')
-docker build --no-cache --pull -t skywirex/skywire-visor:$VERSION .
+ARCH=$(arch)
+docker build --no-cache --pull -t skywirex/skywire-visor:$VERSION-$ARCH .
 ```
 
 ## Track visors
