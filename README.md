@@ -158,9 +158,9 @@ docker build -t skywirex/skywire:$VERSION-$ARCH .
 
 #### BACK UP YOUR KEYS FIRST
 
-HYPERVISOR
+**HYPERVISOR**
 
-Dung va go docker cu
+Stop and remove previous container
 
 ```
 docker stop visor && docker rm visor
@@ -170,7 +170,7 @@ docker stop visor && docker rm visor
 mv ~/.config/skywire/skywire-config.json ~/.config/skywire/skywire-config.json-bak
 ```
 
-Thay thế pk và sk của file cấu hình trong thư mục `~/.config/skywire/`, file cấu hình tương tự như sau:
+Replace pk and sk of `skywire-config.json` in `~/.config/skywire/`, similar:
 
 https://gist.github.com/magicstone1412/ce267562a5fedc01cd576a0a7ed7e4ba
  
@@ -192,7 +192,7 @@ docker create \
 docker start visor
 ```
 
-VISOR
+**VISOR**
 
 ```
 docker stop visor && docker rm visor
@@ -217,7 +217,7 @@ docker create \
 
 ```
 
-Thay thế sk và pk và thêm pk của hypervisor vào phần hypervisors, Sau khi chỉnh sửa tương tự như sau:
+Replace pk and sk of `skywire-config.json` in `~/.config/skywire/`, similar:
 
 https://gist.github.com/magicstone1412/dc815a1866cc8f2d1fd6bdcb84b83436
 
