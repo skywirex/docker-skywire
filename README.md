@@ -12,65 +12,65 @@ sudo sh get-docker.sh
 The architectures supported by this image are: 
 
 
-| Architecture |  Tag   |
+| Architecture |  Tag           |
 | :----------: | -------------- |
-|    aarch64   | v0.3.0-aarch64 |
+|    aarch64   | v0.4.2-aarch64 |
 |    armhf     | not available  |
-|    x86_64    | v0.3.0-x86_64   |
+|    x86_64    | v0.4.2-x86_64  |
 
-Check your board architecture using `arch` command. If you boards are not support, see **Building locally** to build your own docker images. You need to build `skywire-hypervisor` and `skywire-visor` images
+Check your board architecture using `arch` command. 
+
+If you boards are not support, see **Building locally** to build your own docker images. You need to build `skywire-hypervisor` and `skywire-visor` images
 
 ## Usage
 
 Here are some example snippets to help you get started creating a container.
 
-### HYPERVISOR INSTALLATION
+### VISOR WITH HYPERVISOR UI INSTALLATION
 
-- Step 1: Create hypervisor container (replace `<tag>` with appropriate tag above.)
+- Step 1: Create visor with hypervisor in a container (replace `<tag>` with appropriate tag above)
 
 ```
 docker create \
-  --name=hypervisor \
-  -it \
-  --restart=unless-stopped \
-  --net=host \
-  -v ~/.config/skywire:/root/skywire/config \
-skywirex/skywire-hypervisor:<tag>
+    --name=visor \
+    --net=host \
+    -v ~/.config/skywire:/opt/skywire \
+    --restart=unless-stopped \
+  skywirex/skywire:<tag> skywire-visor
 ```
 
 ***Example***: your board architecture `aarch64` using the below command to create hypervisor docker container:
 
 ```
 docker create \
-  --name=hypervisor \
-  -it \
-  --restart=unless-stopped \
-  --net=host \
-  -v ~/.config/skywire:/root/skywire/config \
-skywirex/skywire-hypervisor:v0.3.0-aarch64
+    --name=visor \
+    --net=host \
+    -v ~/.config/skywire:/opt/skywire \
+    --restart=unless-stopped \
+  skywirex/skywire:v0.4.2-aarch64 skywire-visor
 ```
 
-- Step 2: Run hypervisor in Docker container
+- Step 2: Run visor with hypervisor in Docker container
 
 ```
-docker start hypervisor
+docker start visor
 ```
 
-- Step 3: Check the hypervisor container if it run correctly
+- Step 3: Check the visor with hypervisor container if it run correctly
 
 ```
-docker ps -a
+docker ps
 ```
 
-- Step 4: Access to hypervisorUI by typing `<hypervisor-IP>:8000` in your browser
+- Step 4: Access to hypervisor UI by typing `<IP>:8000` in your browser
 
 - Step 5: Get your public key of hypervisor
 
 ```
-cat ~/.config/skywire/hypervisor-config.json
+cat ~/.config/skywire/skywire-config.json
 ```
 
-- Copy public key of hypervisor to input to the configuration file of visor `skywire-config.json`
+- Copy public key to input into the configuration file of visor `skywire-config.json`
 
 ### VISOR INSTALLATION
 
@@ -78,16 +78,14 @@ cat ~/.config/skywire/hypervisor-config.json
 
 ```
 docker create \
-  --name=visor \
-  --cap-add=NET_ADMIN \
-  -it \
-  --restart=unless-stopped \
-  --net=host \
-  -v ~/.config/skywire:/root/skywire/config \
-skywirex/skywire-visor:<tag>
+    --name=visor \
+    --net=host \
+    -v ~/.config/skywire:/opt/skywire \
+    --restart=unless-stopped \
+  skywirex/skywire:<tag> skywire-visor
 ```
 
-- Run visor in Docker container
+- Run visor in a Docker container
 
 ```
 docker start visor
@@ -102,7 +100,7 @@ docker stop visor
 - Edit the contents of `skywire-config.json` file in the folder `~/.config/skywire` look like below
 
 ```
-"hypervisors": ["your-hypervisor-public-key-here"],
+"hypervisors": ["hypervisor-public-key-here"],
 ```
 
 - Start visor again
@@ -111,7 +109,7 @@ docker stop visor
 docker start visor
 ```
 
-### Backup
+### Backup KEYS
 
 Compress your visor folder using this command
 
@@ -125,7 +123,7 @@ Use a program like `WinSCP` to access to your board and copy skywire-visor-backu
 
 Check uptime of your public key at the address below
 
-https://uptime-tracker.skywire.skycoin.com/uptimes
+http://uptime-tracker.skywire.skycoin.com/uptimes
 
 ## Updating Info
 
@@ -151,32 +149,78 @@ If you want to make local modifications to these images for development purposes
 ```
 git clone https://github.com/skywirex/docker-skywire.git
 cd docker-skywire
-cd visor
 VERSION=$(git ls-remote --tags --refs --sort="v:refname" git://github.com/skycoin/skywire.git | tail -n1 | sed 's/.*\///')
 ARCH=$(arch)
-docker build --no-cache --pull -t skywirex/skywire-visor:$VERSION-$ARCH .
+docker build -t skywirex/skywire:$VERSION-$ARCH .
 ```
 
-## Track visors
+### UPDATE FROM PREVIOUS INSTALLATION
 
-You can now track your running visors using google sheet by:
+#### BACK UP YOUR KEYS FIRST
 
-1. Making a copy of google sheet here https://bit.ly/2KAY3Yx
+HYPERVISOR
 
-2. Add the trigger to run script in the interval time
+Dung va go docker cu
 
-3. Bookmark your google sheet and check it manually (about 1 time/day)
+```
+docker stop visor && docker rm visor
+```
 
-To add the trigger and run script in the interval time
+```
+mv ~/.config/skywire/skywire-config.json ~/.config/skywire/skywire-config.json-bak
+```
 
-+ Step 1+2: Make a copy of the above google sheet and click Tools --> Script editor
+Thay thế pk và sk của file cấu hình trong thư mục `~/.config/skywire/`, file cấu hình tương tự như sau:
 
-![step-make-a-copy-and-script-editor](https://user-images.githubusercontent.com/9553811/80311102-dfda5d80-8807-11ea-9b8a-3de91cc13977.png)
+https://gist.github.com/magicstone1412/ce267562a5fedc01cd576a0a7ed7e4ba
+ 
+```
+docker run --rm \
+    -v ~/.config/skywire:/opt/skywire \
+  skywirex/skywire:v0.4.2-aarch64 skywire-cli visor gen-config --is-hypervisor
+```
 
-+ Step 3: 
+```  
+docker create \
+    --name=visor \
+    --net=host \
+    -v ~/.config/skywire:/opt/skywire \
+    --restart=unless-stopped \
+  skywirex/skywire:v0.4.2-aarch64 skywire-visor
+```
+```  
+docker start visor
+```
 
-![step-to-add-trigger](https://user-images.githubusercontent.com/9553811/80311106-e4067b00-8807-11ea-975f-413cff273d49.png)
+VISOR
 
-+ Step 4+5: 
+```
+docker stop visor && docker rm visor
+```
 
-![step-add-trigger](https://user-images.githubusercontent.com/9553811/80311110-e8329880-8807-11ea-95f4-3b67fcc4e3b4.png)
+```
+mv ~/.config/skywire/skywire-config.json ~/.config/skywire/skywire-config.json-bak
+```
+```
+docker run --rm \
+    -v ~/.config/skywire:/opt/skywire \
+  skywirex/skywire:v0.4.2-aarch64 skywire-cli visor gen-config -r
+```
+ 
+```
+docker create \
+    --name=visor \
+    --net=host \
+    -v ~/.config/skywire:/opt/skywire \
+    --restart=unless-stopped \
+  skywirex/skywire:v0.4.2-aarch64 skywire-visor  
+
+```
+
+Thay thế sk và pk và thêm pk của hypervisor vào phần hypervisors, Sau khi chỉnh sửa tương tự như sau:
+
+https://gist.github.com/magicstone1412/dc815a1866cc8f2d1fd6bdcb84b83436
+
+```
+docker start visor
+```
